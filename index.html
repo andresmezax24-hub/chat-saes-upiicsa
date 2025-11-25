@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Asistente UPIICSA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        /* Fondo transparente para integración perfecta */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%; 
+            background-color: #ffff; 
+            overflow: hidden; 
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- 1. Cargamos el motor -->
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+    
+    <!-- 2. Configuración y Lógica (DENTRO DE SCRIPT PARA QUE NO SE VEA TEXTO) -->
+    <script>
+      window.botpress.init({
+        
+          "botId": "23ebc7b2-dc91-4d15-9e6e-22c632381a21",
+          "clientId": "a40a62be-6a3c-4e15-999d-a0cd4e7fba4e",
+          "configuration": {
+              "botName": "Asistente UPIICSA",
+              "botDescription": "Trámites y Titulación",
+              "botAvatar": "https://files.bpcontent.cloud/2025/11/24/23/20251124234515-N6R51A5V.png",
+              "color": "#6C1D45",
+              "variant": "solid",
+              "themeMode": "light",
+              "radius": 1, // Radio pequeño para que se vea moderno
+              
+              // TRUCO: Ocultar elementos que no sirven en modo "App"
+              "showCloseButton": false, 
+              "enableReset": true,
+
+              "stlyesheet": "custom_bp.css",
+          }
+      });
+
+      // --- ORDEN DE APERTURA (El código que se veía como texto) ---
+      
+      // Función para asegurar que esté abierto
+      function asegurarApertura() {
+          window.botpress.open();
+      }
+
+      // 1. Al cargar
+      window.botpress.on("webchat:ready", asegurarApertura);
+      
+      // 2. Si por error se cierra, lo volvemos a abrir inmediatamente
+      window.botpress.on("webchat:closed", asegurarApertura);
+
+      // 3. Seguro de tiempo (500ms)
+      setTimeout(asegurarApertura, 500);
+
+    </script>
+</body>
+</html>
