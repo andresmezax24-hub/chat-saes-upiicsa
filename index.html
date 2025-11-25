@@ -2,41 +2,28 @@
 <html>
 <head>
     <title>Asistente UPIICSA</title>
-    <meta charset="UTF-8">
-    
-    <!-- Configuración para Móvil -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#6C1D45"> <!-- Barra de estado Android guinda -->
-    
-    <!-- Vinculación PWA (Android) - Asegúrate de subir site.webmanifest también -->
-    <link rel="manifest" href="site.webmanifest">
-    
-    <!-- Configuración iOS (iPhone) -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="UPIICSA IA">
-    <link rel="apple-touch-icon" href="https://files.bpcontent.cloud/2025/11/24/23/20251124234515-N6R51A5V.png">
-
     <style>
-        /* Fondo transparente para integración perfecta en extensión */
+        /* Fondo transparente para integración perfecta */
         body, html { 
             margin: 0; 
             padding: 0; 
             height: 100%; 
             width: 100%; 
-            background-color: transparent; 
+            background-color: #ffff; 
             overflow: hidden; 
-            -webkit-tap-highlight-color: transparent;
         }
     </style>
+    
 </head>
 <body>
     <!-- 1. Cargamos el motor -->
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     
-    <!-- 2. Configuración y Lógica -->
+    <!-- 2. Configuración y Lógica (DENTRO DE SCRIPT PARA QUE NO SE VEA TEXTO) -->
     <script>
       window.botpress.init({
+        
           "botId": "23ebc7b2-dc91-4d15-9e6e-22c632381a21",
           "clientId": "a40a62be-6a3c-4e15-999d-a0cd4e7fba4e",
           "configuration": {
@@ -46,37 +33,28 @@
               "color": "#6C1D45",
               "variant": "solid",
               "themeMode": "light",
-              "radius": 1,
-              "enableReset": true
+              "radius": 1, // Radio pequeño para que se vea moderno
+              
+              // TRUCO: Ocultar elementos que no sirven en modo "App"
+              "showCloseButton": false, 
+              "enableReset": true,
           }
       });
 
-      // --- LÓGICA DE APERTURA Y LIMPIEZA VISUAL ---
+      // --- ORDEN DE APERTURA (El código que se veía como texto) ---
       
-      const asegurarApertura = () => {
+      // Función para asegurar que esté abierto
+      function asegurarApertura() {
           window.botpress.open();
-      };
+      }
 
-      window.botpress.on("webchat:ready", () => {
-          asegurarApertura();
-
-          // Inyección CSS quirúrgica para ocultar la "X" dentro del Shadow DOM
-          const widget = document.getElementById('bp-web-widget');
-          if (widget && widget.shadowRoot) {
-              const style = document.createElement('style');
-              style.innerHTML = `
-                  .bpw-header-icon[aria-label="Close UI"],
-                  .bpw-header-icon[title="Close"],
-                  button[aria-label="Close"] { display: none !important; }
-              `;
-              widget.shadowRoot.appendChild(style);
-          }
-      });
-
-      // Si se cierra por error, reabrir
+      // 1. Al cargar
+      window.botpress.on("webchat:ready", asegurarApertura);
+      
+      // 2. Si por error se cierra, lo volvemos a abrir inmediatamente
       window.botpress.on("webchat:closed", asegurarApertura);
 
-      // Seguro de tiempo
+      // 3. Seguro de tiempo (500ms)
       setTimeout(asegurarApertura, 500);
 
     </script>
